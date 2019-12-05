@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.love.fallinlove.dao.UserPairDao" >
+  <resultMap id="BaseResultMap" type="com.love.fallinlove.domain.UserPair" >
+    <id column="user_pair_id" property="userPairId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_join_id" property="userJoinId" jdbcType="BIGINT" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="BIT" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user_pair
+    where user_pair_id = #{userPairId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.love.fallinlove.domain.UserPair" useGeneratedKeys="true" keyProperty="userPairId" >
+    insert into user_pair (user_id, user_join_id, gmt_create, 
+      state)
+    values (#{userId,jdbcType=BIGINT}, #{userJoinId,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.love.fallinlove.domain.UserPair" >
+    update user_pair
+    set user_id = #{userId,jdbcType=BIGINT},
+      user_join_id = #{userJoinId,jdbcType=BIGINT},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=BIT}
+    where user_pair_id = #{userPairId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select user_pair_id, user_id, user_join_id, gmt_create, state
+    from user_pair
+    where user_pair_id = #{userPairId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select user_pair_id, user_id, user_join_id, gmt_create, state
+    from user_pair
+  </select>
+
+  <select id="selectJoinIdByUserId" resultType="java.lang.Long" >
+    select user_id
+    from user_pair where user_join_id = #{userId}  and state = 1
+
+    UNION ALL
+
+    select user_join_id
+    from user_pair where user_id = #{userId}  and state = 1
+  </select>
+
+  <select id="selectCountByUserId" resultType="java.lang.Integer" >
+    SELECT SUM(ua.userNum) FROM
+      (select count(1) userNum
+       from user_pair where (user_id = #{userId} or user_join_id = #{userId}) and state = 1
+       UNION ALL
+       select count(1) userNum
+       from user_pair where (user_id = #{userJoinId} or user_join_id = #{userJoinId}) and state = 1) AS ua
+  </select>
+</mapper>
