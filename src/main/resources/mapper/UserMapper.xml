@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.love.fallinlove.dao.UserDao" >
+  <resultMap id="BaseResultMap" type="com.love.fallinlove.domain.User" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="BIT" />
+    <result column="head_portrait" property="headPortrait" jdbcType="VARCHAR" />
+    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="wechat" property="wechat" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="gmt_delete" property="gmtDelete" jdbcType="TIMESTAMP" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.love.fallinlove.domain.User" useGeneratedKeys="true" keyProperty="userId" >
+    insert into user (login_name, password, nickname, 
+      sex, head_portrait, mobile_phone, 
+      wechat, state, gmt_create, 
+      gmt_modified, gmt_delete)
+    values (#{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=BIT}, #{headPortrait,jdbcType=VARCHAR}, #{mobilePhone,jdbcType=VARCHAR}, 
+      #{wechat,jdbcType=VARCHAR}, #{state,jdbcType=BIT}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{gmtDelete,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.love.fallinlove.domain.User" >
+    update user
+    <set>
+      <if test="loginName != null">
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+    <if test="password != null">
+      password = #{password,jdbcType=VARCHAR},
+    </if>
+    <if test="nickname != null">
+      nickname = #{nickname,jdbcType=VARCHAR},
+    </if>
+      <if test="sex != null">
+      sex = #{sex,jdbcType=BIT},
+      </if>
+      <if test="headPortrait != null">
+      head_portrait = #{headPortrait,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null">
+      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null">
+      wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+      state = #{state,jdbcType=BIT},
+      </if>
+      <if test="gmtModified != null">
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtDelete != null">
+      gmt_delete = #{gmtDelete,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        address = #{address},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select user_id, login_name, nickname, sex, head_portrait, mobile_phone, address
+    from user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select user_id, login_name, password, nickname, sex, head_portrait, mobile_phone, 
+    wechat, state, gmt_create, gmt_modified, gmt_delete
+    from user
+  </select>
+
+  <select id="findUserByWechat" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select user_id, login_name, nickname, sex, head_portrait, mobile_phone, address
+    from user
+    where wechat = #{wechat} and state = 1
+  </select>
+
+  <select id="selectJoinUserByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    SELECT u.user_id, u.login_name, u.nickname, u.sex, u.head_portrait, u.mobile_phone, u.address FROM user_pair up LEFT JOIN `user` u ON up.user_join_id = u.user_id
+    WHERE up.user_id = #{userId} AND up.state = 1 AND u.state = 1
+    UNION ALL
+    SELECT u.user_id, u.login_name, u.nickname, u.sex, u.head_portrait, u.mobile_phone, u.address FROM user_pair up LEFT JOIN `user` u ON up.user_id = u.user_id
+    WHERE up.user_join_id = #{userId} AND up.state = 1 AND u.state = 1
+  </select>
+</mapper>

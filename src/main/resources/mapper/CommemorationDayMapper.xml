@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.love.fallinlove.dao.CommemorationDayDao" >
+  <resultMap id="BaseResultMap" type="com.love.fallinlove.domain.CommemorationDay" >
+    <id column="commemoration_day_id" property="commemorationDayId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_join_id" property="userJoinId" jdbcType="BIGINT" />
+    <result column="day_type" property="dayType" jdbcType="BIT" />
+    <result column="commemoration_time" property="commemorationTime" jdbcType="TIMESTAMP" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="repeat_time" property="repeatTime" jdbcType="BIT" />
+    <result column="home_display" property="homeDisplay" jdbcType="BIT" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from commemoration_day
+    where commemoration_day_id = #{commemorationDayId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.love.fallinlove.dto.CommemorationDayDTO" useGeneratedKeys="true" keyProperty="commemorationDayId" >
+    insert into commemoration_day (user_id, user_join_id, day_type, 
+      commemoration_time, title, detail, 
+      sort, gmt_create, state, repeat_time,home_display
+      )
+    values (#{userId,jdbcType=BIGINT}, #{userJoinId,jdbcType=BIGINT}, #{dayType,jdbcType=BIT}, 
+      #{commemorationTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, 1, #{repeatTime}, #{homeDisplay}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.love.fallinlove.dto.CommemorationDayDTO" >
+    update commemoration_day
+    <set>
+      <if test="dayType != null">
+      day_type = #{dayType,jdbcType=BIT},
+      </if>
+      <if test="commemorationTime != null">
+      commemoration_time = #{commemorationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null">
+      title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+      detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+      sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+      state = #{state,jdbcType=BIT},
+      </if>
+      <if test="repeatTime != null">
+        repeat_time = #{repeatTime,jdbcType=INTEGER},
+      </if>
+      <if test="homeDisplay != null">
+        home_display = #{homeDisplay,jdbcType=INTEGER},
+      </if>
+    </set>
+    where commemoration_day_id = #{commemorationDayId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select commemoration_day_id, user_id, user_join_id, day_type, commemoration_time, 
+    title, detail, sort, gmt_create, state, repeat_time,home_display
+    from commemoration_day
+    where commemoration_day_id = #{commemorationDayId,jdbcType=BIGINT}
+  </select>
+  <select id="selectCommemorationDayBySearch" resultMap="BaseResultMap" parameterType="com.love.fallinlove.dto.CommemorationDayDTO">
+    select commemoration_day_id, user_id, user_join_id, day_type, commemoration_time, 
+    title, detail, sort, gmt_create, state,repeat_time,home_display
+    from commemoration_day
+    where
+          (user_id = #{userId} or user_join_id = #{userId})
+          and state = 1
+          <if test="homeDisplay != null">
+            and home_display = #{homeDisplay}
+          </if>
+    order by gmt_create
+  </select>
+</mapper>
