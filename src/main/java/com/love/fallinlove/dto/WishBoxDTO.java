@@ -30,6 +30,8 @@ public class WishBoxDTO {
 
     private Long userJoinId;
 
+    private Integer homeDisplay;
+
     public Long getWishBoxId() {
         return wishBoxId;
     }
@@ -116,5 +118,13 @@ public class WishBoxDTO {
 
     public void setUserJoinId(Long userJoinId) {
         this.userJoinId = userJoinId;
+    }
+
+    public Integer getHomeDisplay() {
+        return homeDisplay;
+    }
+
+    public void setHomeDisplay(Integer homeDisplay) {
+        this.homeDisplay = homeDisplay;
     }
 }

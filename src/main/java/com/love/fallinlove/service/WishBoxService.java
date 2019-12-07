@@ -1,5 +1,6 @@
 package com.love.fallinlove.service;
 
+import com.love.fallinlove.domain.WishBox;
 import com.love.fallinlove.dto.WishBoxDTO;
 import com.love.fallinlove.vo.WishBoxVO;
 
@@ -39,4 +40,14 @@ public interface WishBoxService {
        * @Modified:
        */
     WishBoxVO listWishBox(WishBoxDTO wishBoxDTO);
+
+    /**
+       * @Description: 根据id查询心愿
+       * @params:  [wishBoxDTO]
+       * @Return:  com.love.fallinlove.vo.WishBoxVO
+       * @Author:  lixin
+       * @Date:  2019/12/7 10:22
+       * @Modified:
+       */
+    WishBox getWishBoxById(WishBoxDTO wishBoxDTO);
 }

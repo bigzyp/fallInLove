@@ -2,6 +2,7 @@ package com.love.fallinlove.controller;
 
 import com.love.enums.CodeMessageEnum;
 import com.love.enums.LoveRuntimeException;
+import com.love.fallinlove.domain.WishBox;
 import com.love.fallinlove.dto.WishBoxDTO;
 import com.love.fallinlove.service.WishBoxService;
 import com.love.fallinlove.vo.WishBoxVO;
@@ -104,6 +105,33 @@ public class WishBoxController {
         }
         // 返回成功信息
         result = new Result(true, CodeMessageEnum.REQUEST_SUCCESS, wishBoxVO);
+        return JsonUtils.beanToJson(result);
+    }
+
+    /**
+     * @Description:  根据id查询心愿
+     * @params:  [commonCommentWithPageDTO]
+     * @Return:  java.lang.String
+     * @Author:  lixin
+     * @Date:  2018/8/8 13:57
+     * @Modified:
+     */
+    @RequestMapping(value = "/getWishBoxById", method = RequestMethod.GET)
+    public String getWishBoxById( WishBoxDTO wishBoxDTO) {
+        Result result;
+        WishBox wishBox;
+        try {
+            wishBox = wishBoxService.getWishBoxById(wishBoxDTO);
+        } catch (LoveRuntimeException e) {
+            result = new Result(false, e.getErrorCode(), null);
+            return JsonUtils.beanToJson(result);
+        } catch (Exception e) {
+            LogUtil.error(e);
+            result = new Result(false, CodeMessageEnum.SERVICE_ERROR,null);
+            return JsonUtils.beanToJson(result);
+        }
+        // 返回成功信息
+        result = new Result(true, CodeMessageEnum.REQUEST_SUCCESS, wishBox);
         return JsonUtils.beanToJson(result);
     }
 }

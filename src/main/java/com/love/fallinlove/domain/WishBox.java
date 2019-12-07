@@ -23,6 +23,8 @@ public class WishBox {
 
     private Integer state;
 
+    private Integer homeDisplay;
+
     public Long getWishBoxId() {
         return wishBoxId;
     }
@@ -101,5 +103,13 @@ public class WishBox {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Integer getHomeDisplay() {
+        return homeDisplay;
+    }
+
+    public void setHomeDisplay(Integer homeDisplay) {
+        this.homeDisplay = homeDisplay;
     }
 }

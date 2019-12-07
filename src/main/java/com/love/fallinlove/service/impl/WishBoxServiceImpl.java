@@ -8,6 +8,7 @@ import com.love.fallinlove.domain.WishBox;
 import com.love.fallinlove.dto.WishBoxDTO;
 import com.love.fallinlove.service.WishBoxService;
 import com.love.fallinlove.vo.WishBoxVO;
+import com.love.utils.EntityUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -40,6 +41,11 @@ public class WishBoxServiceImpl implements WishBoxService {
      */
     @Override
     public void saveWishBox(WishBoxDTO wishBoxDTO) {
+        try {
+            EntityUtil.entityInit(wishBoxDTO);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         wishBoxDTO.setGmtCrate(new Date());
         wishBoxDTO.setState(1);
         wishBoxDTO.setWishSuccess(0);
@@ -66,6 +72,7 @@ public class WishBoxServiceImpl implements WishBoxService {
         wishBox.setWishPic(wishBoxDTO.getWishPic());
         wishBox.setWishSuccess(wishBoxDTO.getWishSuccess());
         wishBox.setWishTime(wishBoxDTO.getWishTime());
+        wishBox.setHomeDisplay(wishBoxDTO.getHomeDisplay());
         wishBoxDao.updateByPrimaryKey(wishBox);
     }
 
@@ -101,6 +108,21 @@ public class WishBoxServiceImpl implements WishBoxService {
         long successNum = wishBoxDao.selectCountWishBoxBySuccess(wishBoxDTO);
         wishBoxVO.setWishSuccessNum(successNum);
         return wishBoxVO;
+
+    }
+
+    /**
+     * @param wishBoxDTO
+     * @Description: 根据id查询心愿
+     * @params: [wishBoxDTO]
+     * @Return: com.love.fallinlove.vo.WishBoxVO
+     * @Author: lixin
+     * @Date: 2019/12/7 10:22
+     * @Modified:
+     */
+    @Override
+    public WishBox getWishBoxById(WishBoxDTO wishBoxDTO) {
+        return wishBoxDao.selectByPrimaryKey(wishBoxDTO.getWishBoxId());
 
     }
 }
