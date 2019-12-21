@@ -184,6 +184,28 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * @param user
+     * @Description: 账号登录
+     * @params: [user]
+     * @Return: com.love.fallinlove.vo.LoversVO
+     * @Author: lixin
+     * @Date: 2019/12/21 10:19
+     * @Modified:
+     */
+    @Override
+    public LoversVO loginIn(User user) {
+        User loginUser = userDao.selectUserByLogin(user);
+        if (loginUser == null) {
+            throw new LoveRuntimeException(CodeMessageEnum.LOGIN_ERROR);
+        }
+        User joinUser = userDao.selectJoinUserByUserId(loginUser.getUserId());
+        LoversVO loversVO = new LoversVO();
+        loversVO.setUser(loginUser);
+        loversVO.setJoinUser(joinUser);
+        return loversVO;
+    }
+
+    /**
      * @param info
      * @param request
      * @param response

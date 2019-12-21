@@ -76,27 +76,33 @@
           <if test="homeDisplay != null">
             and home_display = #{homeDisplay,jdbcType=INTEGER}
           </if>
-    UNION ALL
-    SELECT wish_box_id, user_id, wish_name, detail, wish_time, wish_address, wish_pic,
-           wish_success, gmt_crate, state FROM wish_box WHERE user_id = #{userJoinId} AND state = 1
-          <if test="homeDisplay != null">
-            and home_display = #{homeDisplay,jdbcType=INTEGER}
-          </if>
+    <if test="userJoinId != null">
+      UNION ALL
+      SELECT wish_box_id, user_id, wish_name, detail, wish_time, wish_address, wish_pic,
+      wish_success, gmt_crate, state FROM wish_box WHERE user_id = #{userJoinId} AND state = 1
+      <if test="homeDisplay != null">
+        and home_display = #{homeDisplay,jdbcType=INTEGER}
+      </if>
+    </if>
   </select>
 
   <select id="selectCountWishBox" resultType="java.lang.Long" parameterType="com.love.fallinlove.dto.WishBoxDTO">
     SELECT SUM(ua.num) FROM (
       SELECT count(1) num from wish_box WHERE user_id = #{userId} AND state in (1,3)
-    UNION ALL
+    <if test="userJoinId != null">
+      UNION ALL
       SELECT count(1) num FROM wish_box WHERE user_id = #{userJoinId} AND state = 1
+    </if>
     ) ua
   </select>
 
   <select id="selectCountWishBoxBySuccess" resultType="java.lang.Long" parameterType="com.love.fallinlove.dto.WishBoxDTO">
     SELECT SUM(ua.num) FROM (
       SELECT count(1) num from wish_box WHERE user_id = #{userId} AND state in (1,3) and wish_success = 1
+    <if test="userJoinId != null">
       UNION ALL
       SELECT count(1) num FROM wish_box WHERE user_id = #{userJoinId} AND state = 1 and wish_success = 1
+    </if>
     ) ua
   </select>
 </mapper>

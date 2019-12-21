@@ -7,8 +7,6 @@ public class CommemorationDay {
 
     private Long userId;
 
-    private Long userJoinId;
-
     private Integer dayType;
 
     private Date commemorationTime;
@@ -41,14 +39,6 @@ public class CommemorationDay {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public Long getUserJoinId() {
-        return userJoinId;
-    }
-
-    public void setUserJoinId(Long userJoinId) {
-        this.userJoinId = userJoinId;
     }
 
     public Date getCommemorationTime() {

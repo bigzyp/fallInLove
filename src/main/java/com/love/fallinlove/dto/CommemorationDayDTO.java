@@ -10,8 +10,6 @@ public class CommemorationDayDTO extends PageQuery {
 
     private Long userId;
 
-    private Long userJoinId;
-
     private Integer dayType;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -31,6 +29,8 @@ public class CommemorationDayDTO extends PageQuery {
 
     private Integer repeatTime;
 
+    private Long userJoinId;
+
     public Long getCommemorationDayId() {
         return commemorationDayId;
     }
@@ -45,14 +45,6 @@ public class CommemorationDayDTO extends PageQuery {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public Long getUserJoinId() {
-        return userJoinId;
-    }
-
-    public void setUserJoinId(Long userJoinId) {
-        this.userJoinId = userJoinId;
     }
 
     public Integer getDayType() {
@@ -125,5 +117,13 @@ public class CommemorationDayDTO extends PageQuery {
 
     public void setRepeatTime(Integer repeatTime) {
         this.repeatTime = repeatTime;
+    }
+
+    public Long getUserJoinId() {
+        return userJoinId;
+    }
+
+    public void setUserJoinId(Long userJoinId) {
+        this.userJoinId = userJoinId;
     }
 }

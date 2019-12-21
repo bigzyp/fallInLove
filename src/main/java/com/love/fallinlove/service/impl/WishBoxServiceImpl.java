@@ -1,7 +1,5 @@
 package com.love.fallinlove.service.impl;
 
-import com.love.enums.CodeMessageEnum;
-import com.love.enums.LoveRuntimeException;
 import com.love.fallinlove.dao.UserPairDao;
 import com.love.fallinlove.dao.WishBoxDao;
 import com.love.fallinlove.domain.WishBox;
@@ -88,9 +86,6 @@ public class WishBoxServiceImpl implements WishBoxService {
     @Override
     public WishBoxVO listWishBox(WishBoxDTO wishBoxDTO) {
         Long userJoinId = userPairDao.selectJoinIdByUserId(wishBoxDTO.getUserId());
-        if (userJoinId == null) {
-            throw new LoveRuntimeException(CodeMessageEnum.ACCESS_BARRED);
-        }
         wishBoxDTO.setUserJoinId(userJoinId);
         WishBoxVO wishBoxVO = new WishBoxVO();
         //查询总心愿数

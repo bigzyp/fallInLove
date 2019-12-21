@@ -34,6 +34,8 @@ public class CommemorationDayServiceImpl implements CommemorationDayService {
      */
     @Override
     public List<CommemorationDay> listCommemorationDay(CommemorationDayDTO commemorationDayDTO) {
+        Long userJoinId = userPairDao.selectJoinIdByUserId(commemorationDayDTO.getUserId());
+        commemorationDayDTO.setUserJoinId(userJoinId);
         return commemorationDayDao.selectCommemorationDayBySearch(commemorationDayDTO);
     }
 
@@ -57,11 +59,6 @@ public class CommemorationDayServiceImpl implements CommemorationDayService {
        */
     @Override
     public void saveCommemorationDay(CommemorationDayDTO commemorationDayDTO) {
-        Long userJoinId = userPairDao.selectJoinIdByUserId(commemorationDayDTO.getUserId());
-        if (userJoinId == null) {
-            throw new LoveRuntimeException(CodeMessageEnum.ACCESS_BARRED);
-        }
-        commemorationDayDTO.setUserJoinId(userJoinId);
         try {
             EntityUtil.entityInit(commemorationDayDTO);
         } catch (Exception e) {

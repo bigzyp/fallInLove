@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="com.love.fallinlove.domain.CommemorationDay" >
     <id column="commemoration_day_id" property="commemorationDayId" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="user_join_id" property="userJoinId" jdbcType="BIGINT" />
     <result column="day_type" property="dayType" jdbcType="BIT" />
     <result column="commemoration_time" property="commemorationTime" jdbcType="TIMESTAMP" />
     <result column="title" property="title" jdbcType="VARCHAR" />
@@ -20,11 +19,11 @@
     where commemoration_day_id = #{commemorationDayId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.love.fallinlove.dto.CommemorationDayDTO" useGeneratedKeys="true" keyProperty="commemorationDayId" >
-    insert into commemoration_day (user_id, user_join_id, day_type, 
+    insert into commemoration_day (user_id, day_type, 
       commemoration_time, title, detail, 
       sort, gmt_create, state, repeat_time,home_display
       )
-    values (#{userId,jdbcType=BIGINT}, #{userJoinId,jdbcType=BIGINT}, #{dayType,jdbcType=BIT}, 
+    values (#{userId,jdbcType=BIGINT}, #{dayType,jdbcType=BIT},
       #{commemorationTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
       #{sort,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, 1, #{repeatTime}, #{homeDisplay}
       )
@@ -60,21 +59,35 @@
     where commemoration_day_id = #{commemorationDayId,jdbcType=BIGINT}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select commemoration_day_id, user_id, user_join_id, day_type, commemoration_time, 
+    select commemoration_day_id, user_id, day_type, commemoration_time, 
     title, detail, sort, gmt_create, state, repeat_time,home_display
     from commemoration_day
     where commemoration_day_id = #{commemorationDayId,jdbcType=BIGINT}
   </select>
   <select id="selectCommemorationDayBySearch" resultMap="BaseResultMap" parameterType="com.love.fallinlove.dto.CommemorationDayDTO">
-    select commemoration_day_id, user_id, user_join_id, day_type, commemoration_time, 
+    select commemoration_day_id, user_id, day_type, commemoration_time, 
     title, detail, sort, gmt_create, state,repeat_time,home_display
     from commemoration_day
     where
-          (user_id = #{userId} or user_join_id = #{userId})
-          and state = 1
-          <if test="homeDisplay != null">
-            and home_display = #{homeDisplay}
-          </if>
+        user_id = #{userId}
+        and state = 1
+        <if test="homeDisplay != null">
+          and home_display = #{homeDisplay}
+        </if>
+
+    <if test="userJoinId != null">
+      UNION ALL
+      select commemoration_day_id, user_id, day_type, commemoration_time,
+      title, detail, sort, gmt_create, state,repeat_time,home_display
+      from commemoration_day
+      where
+      user_id = #{userJoinId}
+      and state = 1
+      <if test="homeDisplay != null">
+        and home_display = #{homeDisplay}
+      </if>
+    </if>
+
     order by gmt_create
   </select>
 </mapper>

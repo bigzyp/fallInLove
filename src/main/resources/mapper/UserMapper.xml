@@ -93,4 +93,10 @@
     SELECT u.user_id, u.login_name, u.nickname, u.sex, u.head_portrait, u.mobile_phone, u.address FROM user_pair up LEFT JOIN `user` u ON up.user_id = u.user_id
     WHERE up.user_join_id = #{userId} AND up.state = 1 AND u.state = 1
   </select>
+
+  <select id="selectUserByLogin" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select user_id, login_name, nickname, sex, head_portrait, mobile_phone, address
+    from user
+    where login_name = #{loginName} and password = #{password} and state = 1
+  </select>
 </mapper>

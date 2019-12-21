@@ -54,4 +54,14 @@ public interface UserService {
        * @Modified:
        */
     void updateUserInfo(UserDTO userDTO);
+
+    /**
+       * @Description: 账号登录
+       * @params:  [user]
+       * @Return:  com.love.fallinlove.vo.LoversVO
+       * @Author:  lixin
+       * @Date:  2019/12/21 10:19
+       * @Modified:
+       */
+    LoversVO loginIn(User user);
 }

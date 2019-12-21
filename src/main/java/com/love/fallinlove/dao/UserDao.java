@@ -33,4 +33,14 @@ public interface UserDao {
        * @Modified:
        */
     User selectJoinUserByUserId(Long userId);
+
+    /**
+       * @Description: 账号密码
+       * @params:  [user]
+       * @Return:  com.love.fallinlove.domain.User
+       * @Author:  lixin
+       * @Date:  2019/12/21 10:22
+       * @Modified:
+       */
+    User selectUserByLogin(User user);
 }

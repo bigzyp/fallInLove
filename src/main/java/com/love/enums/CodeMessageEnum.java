@@ -23,7 +23,7 @@ public enum CodeMessageEnum {
 
     ACCESS_BARRED("403", "禁止访问"),
 
-    ALREADY_SIGNED("505", "已报名该课程"),
+    LOGIN_ERROR("505", "账号密码错误"),
 
     LIMIT_RECORD("602", "禁止报名"),
 
