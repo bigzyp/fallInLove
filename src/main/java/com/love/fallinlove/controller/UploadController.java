@@ -46,6 +46,7 @@ public class UploadController {
                 String filePath = STATIC_PATH + SUB_PATH + "/"+ userId;
                 File file1 =new File(filePath);
                 //如果文件夹不存在则创建
+                LogUtil.info("upload=>AbsolutePat:" + file1.getAbsolutePath());
                 if(!file1.exists()  && !file1.isDirectory()){
                     file1.mkdirs();
                 }
